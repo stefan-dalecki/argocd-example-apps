@@ -15,9 +15,14 @@ spec:
           repo: argocd-example-apps
           # Reference to a Secret containing an access token. (optional)
         requeueAfterSeconds: 1800
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: guestbook-ui
   template:
     metadata:
-      name: guestbook-ui
+      name: "guestbook-{{ .branch }}"
     labels:
       app: guestbook-ui
     spec:
