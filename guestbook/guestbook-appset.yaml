@@ -15,7 +15,7 @@ spec:
           repo: argocd-example-apps
           # Reference to a Secret containing an access token. (optional)
         requeueAfterSeconds: 1800
-  replicas: 1
+  replicas: 2
   revisionHistoryLimit: 3
   selector:
     matchLabels:
