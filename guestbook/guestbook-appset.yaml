@@ -40,3 +40,6 @@ spec:
         syncOptions:
           - CreateNamespace=true
           - DeleteNamespace=true
+        managedNamespaceMetadata:
+          labels:
+            app.kubernetes.io/instance: guestbook-appset
