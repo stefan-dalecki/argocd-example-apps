@@ -22,15 +22,18 @@ spec:
       app: guestbook-ui
   template:
     metadata:
-      name: "guestbook-{{ .branch }}"
-    labels:
-      app: guestbook-ui
+      labels:
+        app: guestbook-ui
     spec:
       project: default
       destination:
         server: https://kubernetes.default.svc
         namespace: "guestbook-{{ .branch }}"
-
+      containers:
+        - image: gcr.io/heptio-images/ks-guestbook-demo:0.2
+          name: guestbook-ui
+          ports:
+            - containerPort: 80
       syncPolicy:
         # Create namespace if it does not exist
         syncOptions:
