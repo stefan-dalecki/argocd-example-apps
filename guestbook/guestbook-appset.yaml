@@ -1,3 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: demo-{{ .Values.branch}}-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: "{{ .Values.branch }}.example.com"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix # pathType no longer has a default value in v1; "Exact", "Prefix", or "ImplementationSpecific" must be specified
+            backend:
+              service:
+                name: guestbook-appset
+                port:
+                  number: 80
+---
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
@@ -20,14 +38,14 @@ spec:
       app: guestbook-ui
   template:
     metadata:
-      name: guestbook-ui-test
+      name: guestbook-ui-{{ .branch }}
       labels:
         app: guestbook-ui
     spec:
       project: default
       destination:
         server: https://kubernetes.default.svc
-        namespace: "guestbook-test"
+        namespace: "guestbook-{{ .branch }}"
       containers:
         - image: gcr.io/heptio-images/ks-guestbook-demo:0.2
           name: guestbook-ui
