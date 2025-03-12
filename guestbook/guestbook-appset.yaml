@@ -17,7 +17,7 @@ spec:
         requeueAfterSeconds: 1800
   template:
     metadata:
-      name: "guestbook-{{ .branch }}"
+      name: guestbook-ui
     labels:
       app: guestbook-ui
     spec:
