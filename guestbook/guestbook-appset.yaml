@@ -1,11 +1,11 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: demo-{{ .Values.branch}}-ingress
+  name: guestbook-ingress
 spec:
   ingressClassName: nginx
   rules:
-    - host: "{{ .Values.branch }}.example.com"
+    - host: https://kubernetes.default.svc
       http:
         paths:
           - path: /
