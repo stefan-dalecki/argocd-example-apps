@@ -12,7 +12,7 @@ spec:
             pathType: Prefix # pathType no longer has a default value in v1; "Exact", "Prefix", or "ImplementationSpecific" must be specified
             backend:
               service:
-                name: guestbook-appset
+                name: guestbook-ui
                 port:
                   number: 80
 ---
