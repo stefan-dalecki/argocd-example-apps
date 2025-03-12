@@ -22,14 +22,14 @@ spec:
       app: guestbook-ui
   template:
     metadata:
-      name: guestbook-ui-{{ .branch }}
+      name: guestbook-ui-test
       labels:
         app: guestbook-ui
     spec:
       project: default
       destination:
         server: https://kubernetes.default.svc
-        namespace: "guestbook-{{ .branch }}"
+        namespace: "guestbook-test"
       containers:
         - image: gcr.io/heptio-images/ks-guestbook-demo:0.2
           name: guestbook-ui
