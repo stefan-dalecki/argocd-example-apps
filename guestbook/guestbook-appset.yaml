@@ -22,6 +22,7 @@ spec:
       app: guestbook-ui
   template:
     metadata:
+      name: guestbook-ui-{{ .branch }}
       labels:
         app: guestbook-ui
     spec:
