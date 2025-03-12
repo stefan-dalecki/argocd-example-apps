@@ -4,17 +4,15 @@ metadata:
   name: guestbook-appset
   namespace: argocd
 spec:
-  # goTemplate: true
-  # goTemplateOptions: ["missingkey=error"]
-  # generators:
-  #   - pullRequest:
-  #       github:
-  #         # The GitHub organization or user.
-  #         owner: stefan-dalecki
-  #         # The Github repository
-  #         repo: argocd-example-apps
-  #         # Reference to a Secret containing an access token. (optional)
-  #       requeueAfterSeconds: 1800
+  generators:
+    - pullRequest:
+        github:
+          # The GitHub organization or user.
+          owner: stefan-dalecki
+          # The Github repository
+          repo: argocd-example-apps
+          # Reference to a Secret containing an access token. (optional)
+        requeueAfterSeconds: 1800
   replicas: 1
   revisionHistoryLimit: 3
   selector:
