@@ -1,32 +1,32 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "helm-guestbook.fullname" . }}
+  name: { { template "helm-guestbook.fullname" . } }
   labels:
-    app: {{ template "helm-guestbook.name" . }}
-    chart: {{ template "helm-guestbook.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    app: { { template "helm-guestbook.name" . } }
+    chart: { { template "helm-guestbook.chart" . } }
+    release: { { .Release.Name } }
+    heritage: { { .Release.Service } }
 spec:
-  replicas: {{ .Values.replicaCount }}
+  replicas: { { .Values.replicaCount } }
   revisionHistoryLimit: 3
   selector:
     matchLabels:
-      app: {{ template "helm-guestbook.name" . }}
-      release: {{ .Release.Name }}
+      app: { { template "helm-guestbook.name" . } }
+      release: { { .Release.Name } }
   template:
     metadata:
       labels:
-        app: {{ template "helm-guestbook.name" . }}
-        release: {{ .Release.Name }}
+        app: { { template "helm-guestbook.name" . } }
+        release: { { .Release.Name } }
     spec:
       containers:
-        - name: {{ .Chart.Name }}
+        - name: { { .Chart.Name } }
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          imagePullPolicy: { { .Values.image.pullPolicy } }
           ports:
             - name: http
-              containerPort: {{ .Values.containerPort }}
+              containerPort: { { .Values.containerPort } }
               protocol: TCP
           livenessProbe:
             httpGet:
@@ -37,16 +37,16 @@ spec:
               path: /
               port: http
           resources:
-{{ toYaml .Values.resources | indent 12 }}
-    {{- with .Values.nodeSelector }}
-      nodeSelector:
-{{ toYaml . | indent 8 }}
-    {{- end }}
-    {{- with .Values.affinity }}
-      affinity:
-{{ toYaml . | indent 8 }}
-    {{- end }}
-    {{- with .Values.tolerations }}
-      tolerations:
-{{ toYaml . | indent 8 }}
-    {{- end }}
+# {{ toYaml .Values.resources | indent 12 }}
+#     {{- with .Values.nodeSelector }}
+#       nodeSelector:
+# {{ toYaml . | indent 8 }}
+#     {{- end }}
+#     {{- with .Values.affinity }}
+#       affinity:
+# {{ toYaml . | indent 8 }}
+#     {{- end }}
+#     {{- with .Values.tolerations }}
+#       tolerations:
+# {{ toYaml . | indent 8 }}
+#     {{- end }}
