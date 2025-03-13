@@ -1,0 +1,75 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: guestbook-appset
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - pullRequest:
+        github:
+          # The GitHub organization or user.
+          owner: stefan-dalecki
+          # The Github repository
+          repo: argocd-example-apps
+          # Reference to a Secret containing an access token. (optional)
+        requeueAfterSeconds: 1800
+  template:
+    metadata:
+      name: "guestbook-{{ .branch }}-app"
+      labels:
+        app: { { template "helm-guestbook.name" . } }
+        release: { { .Release.Name } }
+    spec:
+      project: default
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: argocd
+
+      syncPolicy:
+        # Automate drift correction
+        automated:
+          prune: true
+          selfHeal: true
+        # Create namespace if it does not exist
+        syncPolicy:
+        # Create namespace if it does not exist
+        syncOptions:
+          - CreateNamespace=true
+          - DeleteNamespace=true
+        managedNamespaceMetadata:
+          labels:
+            app.kubernetes.io/instance: guestbook-appset
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: guestbook-{{ .Values.branch}}-svc
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+  selector:
+    app: guestbook-{{ .Values.branch}}-app
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: guestbook-{{ .Values.branch}}-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: guestbook-{{ .Values.branch}}-app
+  template:
+    metadata:
+      labels:
+        app: guestbook-{{ .Values.branch}}-app
+    spec:
+      containers:
+        - name: guestbook-{{ .Values.branch}}-container
+          image: nginxdemos/hello
+          ports:
+            - containerPort: 80
+          resources: {}
